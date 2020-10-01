@@ -2,7 +2,6 @@ package com.xh.microservice.user_service.Impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -61,8 +60,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     public IPage<UserVo> listUser(String userName, Query query) {
         userName = userName == null ? "" : userName;
         Page<User> page = new Page<>();
-//        page.setAsc(StringUtils.toStrArray(query.getAscs()));
-//        page.setDesc(StringUtils.toStrArray(query.getDescs()));
+        page.setAsc(StringUtils.toStrArray(query.getAscs()));
+        page.setDesc(StringUtils.toStrArray(query.getDescs()));
         page.setSize(query.getPageSize());
         page.setCurrent(query.getCurrent());
 
@@ -108,6 +107,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
                 .ne(User::getUserId, userPojo.getUserId()));
         Assert.isTrue(exists == 0, "该用户名已存在! ");
         User updateUser = this.baseMapper.selectOne(new QueryWrapper<User>().lambda().eq(User::getUserId, userPojo.getUserId()));
+        Assert.notNull(updateUser, "该用户不存在!");
         updateUser.setUserName(userPojo.getUserName());
         updateUser.setPassword(userPojo.getPassword());
         updateUser.setUserPhone(userPojo.getUserPhone());
@@ -120,6 +120,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Transactional
     public boolean deleteUser(final String userId) {
         User delUser = this.baseMapper.selectOne(new QueryWrapper<User>().lambda().eq(User::getUserId, userId));
+        Assert.notNull(delUser, "该用户不存在！");
         delUser.setDeleted(UserConstants.USER_DELETED);
         return this.baseMapper.updateById(delUser) > 0;
     }
