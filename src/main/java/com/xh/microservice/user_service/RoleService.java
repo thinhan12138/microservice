@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.xh.microservice.common.support.Query;
 import com.xh.microservice.user_entity.Role;
+import com.xh.microservice.user_pojo.RoleMenuPojo;
 import com.xh.microservice.user_pojo.RolePojo;
 
 import java.util.List;
@@ -24,4 +25,6 @@ public interface RoleService extends IService<Role> {
     boolean deleteRole(String roleId);
 
     boolean deleteUserBatch(List<String> roleIds) throws Exception;
+
+    RoleMenuPojo listMenu(String roleId);
 }

@@ -65,7 +65,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         page.setSize(query.getPageSize());
         page.setCurrent(query.getCurrent());
 
-        IPage<User> userPage = this.baseMapper.findUserList(page, userName);
+//        IPage<User> userPage = this.baseMapper.findUserList(page, userName);
+        IPage<User> userPage = this.baseMapper.selectPage(page, new QueryWrapper<User>().lambda()
+                                .eq(User::getDeleted, UserConstants.USER_NOT_DELETED)
+                                .like(User::getUserName, userName));
 
 
 
@@ -135,5 +138,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             }
         }
         return true;
+    }
+
+    @Override
+    public List<String> findPermissionsByUserId(String userId) {
+        Assert.notNull(userId, "用户id不能为空!");
+        return this.baseMapper.findPermissionsByUserId(userId);
     }
 }

@@ -5,8 +5,10 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.xh.microservice.common.controller.BasicController;
 import com.xh.microservice.common.result.R;
 import com.xh.microservice.common.support.Query;
+import com.xh.microservice.user_entity.Menu;
 import com.xh.microservice.user_entity.Role;
 import com.xh.microservice.user_entity.User;
+import com.xh.microservice.user_pojo.RoleMenuPojo;
 import com.xh.microservice.user_pojo.RolePojo;
 import com.xh.microservice.user_pojo.UserPojo;
 import com.xh.microservice.user_service.RoleService;
@@ -29,14 +31,12 @@ public class RoleController extends BasicController {
     private RoleService roleService;
 
     @PostMapping("/list")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public R<IPage<Role>> listRole(@RequestParam(value = "roleName", required = false) String roleName, @RequestBody Query query){
         final IPage<Role> listRole = roleService.listRole(roleName, query);
         return R.data(listRole);
     }
 
     @GetMapping("/detail/{roleId}")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public R detailRole(@PathVariable String roleId){
         Assert.notNull(roleId, "角色id不能为空!");
         final Role role = roleService.getOne(new QueryWrapper<Role>().lambda().eq(Role::getRoleId, roleId));
@@ -44,7 +44,6 @@ public class RoleController extends BasicController {
     }
 
     @PostMapping("/add")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public R addRole(@RequestBody RolePojo rolePojo){
         try {
             //TODO rolePojo字段非空校验
@@ -59,7 +58,6 @@ public class RoleController extends BasicController {
     }
 
     @PostMapping("/update")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public R updateRole(@RequestBody RolePojo rolePojo){
         try {
             Assert.notNull(rolePojo, "角色信息不能为空！");
@@ -72,7 +70,6 @@ public class RoleController extends BasicController {
     }
 
     @GetMapping("/delete/{roleId}")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public R deleteRole(@PathVariable String roleId) {
         Assert.notNull(roleId, "角色id不能为空！");
         try {
@@ -84,12 +81,22 @@ public class RoleController extends BasicController {
     }
 
     @PostMapping("/deleteBatch")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public R deleteRoleBatch(@RequestParam("roleIds") List<String> roleIds) {
         try {
             Assert.notNull(roleIds, "角色ids不能为空！");
             final boolean result = roleService.deleteUserBatch(roleIds);
             return result ? R.success() : R.fail();
+        } catch (Exception e) {
+            return R.fail(e.getMessage());
+        }
+    }
+
+    @GetMapping("/menu/{roleId}")
+    public R listMenu(@PathVariable String roleId) {
+        try {
+            Assert.notNull(roleId, "角色id不能为空！");
+            final RoleMenuPojo roleMenu = roleService.listMenu(roleId);
+            return R.data(roleMenu);
         } catch (Exception e) {
             return R.fail(e.getMessage());
         }

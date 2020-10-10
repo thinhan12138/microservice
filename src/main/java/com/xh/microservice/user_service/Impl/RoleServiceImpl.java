@@ -12,6 +12,7 @@ import com.xh.microservice.user_constants.UserConstants;
 import com.xh.microservice.user_entity.Role;
 import com.xh.microservice.user_entity.User;
 import com.xh.microservice.user_mapper.RoleMapper;
+import com.xh.microservice.user_pojo.RoleMenuPojo;
 import com.xh.microservice.user_pojo.RolePojo;
 import com.xh.microservice.user_service.RoleService;
 import com.xh.microservice.user_vo.UserVo;
@@ -95,5 +96,11 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
             }
         }
         return true;
+    }
+
+    @Override
+    public RoleMenuPojo listMenu(final String roleId) {
+
+        return null;
     }
 }

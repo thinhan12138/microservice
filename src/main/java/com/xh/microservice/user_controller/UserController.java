@@ -28,14 +28,12 @@ public class UserController extends BasicController {
     private UserService userService;
 
     @PostMapping("/list")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public R<IPage<UserVo>> listUser(@RequestParam(value = "userName", required = false) String userName, @RequestBody Query query){
         final IPage<UserVo> listUser = userService.listUser(userName, query);
         return R.data(listUser);
     }
 
     @GetMapping("/detail/{userId}")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public R detailUser(@PathVariable String userId){
         try {
             Assert.notNull(userId, "用户id不能为空!");
@@ -47,7 +45,6 @@ public class UserController extends BasicController {
     }
 
     @PostMapping("/add")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public R addUser(@RequestBody UserPojo userPojo){
         try {
             //TODO userPojo字段非空校验
@@ -62,7 +59,6 @@ public class UserController extends BasicController {
     }
 
     @PostMapping("/update")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public R updateUser(@RequestBody UserPojo userPojo){
         try {
             //TODO userPojo字段非空校验
@@ -76,7 +72,6 @@ public class UserController extends BasicController {
     }
 
     @GetMapping("/delete/{userId}")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public R deleteUser(@PathVariable String userId) {
         try {
             Assert.notNull(userId, "用户id不能为空！");
@@ -88,7 +83,6 @@ public class UserController extends BasicController {
     }
 
     @PostMapping("/deleteBatch")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public R deleteUserBatch(@RequestParam("userIds") List<String> userIds) {
         try {
             Assert.notNull(userIds, "用户ids不能为空！");

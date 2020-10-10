@@ -33,4 +33,12 @@ public class LoginController {
         JwtAuthenticatioToken token = SecurityUtils.login(request, username, password, authenticationManager);
         return token == null ? R.fail("登录失败"):R.success(token.getToken(), "登录成功");
     }
+
+    /**
+     * 退出登录接口
+     */
+    @GetMapping(value = "/logout")
+    public R logout() throws IOException {
+        return R.data("退出登录");
+    }
 }

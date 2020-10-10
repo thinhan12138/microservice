@@ -16,9 +16,12 @@ import java.util.Set;
  * @Date: Created in 20:40 2020/9/27
  */
 public interface UserService extends IService<User> {
+
     User findByUsername(String username);
 
     Set<String> findPermissions(String username);
+
+    List<String> findPermissionsByUserId(String userId);
 
     User addUser(UserPojo userPojo);
 
