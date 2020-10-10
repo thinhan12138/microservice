@@ -23,4 +23,15 @@
             </if>
         </where>
     </select>
+
+    <select id="listMenuByRoleId" resultType="com.xh.microservice.user_pojo.MenuPojo">
+        select bm.menu_id menuId, bm.menu_name menuName
+        from role_menu rm left join base_menu bm on rm.menu_id = bm.menu_id
+        <where>
+            bm.deleted = 0
+            <if test="roleId != null and roleId != ''">
+                and rm.role_id = #{roleId}
+            </if>
+        </where>
+    </select>
 </mapper>
