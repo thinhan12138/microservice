@@ -101,4 +101,17 @@ public class RoleController extends BasicController {
             return R.fail(e.getMessage());
         }
     }
+
+    @PostMapping("/menu/bind")
+    public R bindMenu(@RequestBody RoleMenuPojo roleMenuPojo) {
+        try {
+            Assert.notNull(roleMenuPojo, "角色菜单信息不能为空！");
+            Assert.notNull(roleMenuPojo.getRoleId(), "角色id不能为空！");
+            Assert.notNull(roleMenuPojo.getMenuList(), "菜单信息不能为空！");
+            final boolean result = roleService.bindMenu(roleMenuPojo);
+            return result ? R.success() : R.fail();
+        } catch (Exception e) {
+            return R.fail(e.getMessage());
+        }
+    }
 }

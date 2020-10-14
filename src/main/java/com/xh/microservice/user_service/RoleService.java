@@ -27,4 +27,6 @@ public interface RoleService extends IService<Role> {
     boolean deleteUserBatch(List<String> roleIds) throws Exception;
 
     RoleMenuPojo listMenu(String roleId);
+
+    boolean bindMenu(RoleMenuPojo roleMenuPojo);
 }
